@@ -18,8 +18,7 @@ class _RecipeListPageState extends State<RecipeListPage> {
   }
 
   Future<void> loadRecipes() async {
-    final String response =
-    await rootBundle.loadString('assets/recipes.json');
+    final String response = await rootBundle.loadString('assets/recipes.json');
     final List<dynamic> data = jsonDecode(response);
 
     setState(() {
@@ -30,21 +29,41 @@ class _RecipeListPageState extends State<RecipeListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Food Recipes")),
+      appBar: AppBar(
+        title: Text(
+          "Food Recipes",
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+        ),
+        backgroundColor: Colors.green,
+        centerTitle: true
+      ),
       body: recipes.isEmpty
           ? Center(child: CircularProgressIndicator())
           : ListView.builder(
-        itemCount: recipes.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(
-              recipes[index].title,
-              style: TextStyle(fontSize: 18),
+              itemCount: recipes.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(
+                    recipes[index].title,
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(recipes[index].description),
+                      SizedBox(height: 4),
+                      Text(
+                        "Calories: ${recipes[index].calories}",
+                        style: TextStyle(
+                          color: Colors.redAccent,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
             ),
-            subtitle: Text(recipes[index].description),
-          );
-        },
-      ),
     );
   }
 }
